@@ -32,7 +32,7 @@ namespace DiscConnectedApi.DAL
                 await ForumData.GetForums();
             }
 
-            Forums.RemoveAt(id);
+            Forums.RemoveAt(id-1);
         }
 
         internal static async Task<List<Forum>> GetAllForums()
@@ -76,14 +76,12 @@ namespace DiscConnectedApi.DAL
             {
                 existingForum.Name = forum.Name;
 
-                // Perform validation checks
                 var validationContext = new ValidationContext(existingForum, serviceProvider: null, items: null);
                 var validationResults = new List<ValidationResult>();
                 bool isValid = Validator.TryValidateObject(existingForum, validationContext, validationResults, validateAllProperties: true);
 
                 if (!isValid)
                 {
-                    // Handle validation errors, log or return appropriate response
                     string validationErrors = string.Join(", ", validationResults.Select(v => v.ErrorMessage));
                     Console.WriteLine($"Validation errors: {validationErrors}");
                 }
