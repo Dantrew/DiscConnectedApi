@@ -12,17 +12,18 @@ namespace DiscConnectedApi.DAL
             _context = context;
         }
 
-        public static async Task<List<Models.Forum>> GetForums()
-        {
-            List<Models.Forum> forums = null;
+        //public async Task<List<Models.Forum>> GetForums()
+        //{
+        //    List<Models.Forum> forums = new();
 
-            using (var context = new MyDbContext()) 
-            {
-                forums = await context.Forum.ToListAsync();
-            }
+            //using (var context = new MyDbContext())
+            //{
+                //forums = await _context.Forum.ToListAsync();
+            //}
 
-            return forums;
-        }
+
+        //    return forums;
+        //}
 
     }
 }

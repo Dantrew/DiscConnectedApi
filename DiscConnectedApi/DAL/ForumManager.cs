@@ -1,5 +1,6 @@
 ﻿using DiscConnectedApi.DbContext;
 using DiscConnectedApi.Models;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace DiscConnectedApi.DAL
@@ -13,46 +14,35 @@ namespace DiscConnectedApi.DAL
             _context = context;
         }
 
-        public static List<Models.Forum> Forums { get; set; }
+        //public static List<Models.Forum> Forums { get; set; }
 
-        internal static async Task CreateForum(Forum forum)
+        //internal static async Task CreateForum(Forum forum)
+        //{
+        //    if (Forums is null)
+        //    {
+        //        await ForumData.GetForums();
+        //    }
+        //    Forums.Add(forum);
+        //}
+
+        //internal static async Task DeleteForum(int id)
+        //{
+        //    if (Forums is null)
+        //    {
+        //        await ForumData.GetForums();
+        //    }
+
+        //    Forums.RemoveAt(id - 1);
+        //}
+
+        internal async Task<List<Forum>> GetAllForums()
         {
-            if (Forums is null)
-            {
-                await ForumData.GetForums();
-            }
-
-            Forums.Add(forum);
+            return await _context.Forum.ToListAsync();
         }
 
-        internal static async Task DeleteForum(int id)
+        internal async Task<Forum> GetOneForum(int id)
         {
-            if (Forums is null)
-            {
-                await ForumData.GetForums();
-            }
-
-            Forums.RemoveAt(id-1);
-        }
-
-        internal static async Task<List<Forum>> GetAllForums()
-        {
-            if (Forums == null || !Forums.Any())
-            {
-                Forums = await ForumData.GetForums();
-            }
-
-            return Forums;
-        }
-
-        internal static async Task<Forum> GetOneForum(int id)
-        {
-            if (Forums == null || !Forums.Any())
-            {
-                Forums = await ForumData.GetForums();
-            }
-
-            var existingForum = Forums.Where(p => p.Id == id).SingleOrDefault();
+            var existingForum = _context.Forum.Where(p => p.Id == id).SingleOrDefault();
 
             if (existingForum != null)
             {
@@ -64,14 +54,9 @@ namespace DiscConnectedApi.DAL
             }
         }
 
-        internal static async Task UpdateForum(Forum forum, int id)
+        internal async Task UpdateForum(Forum forum, int id)
         {
-            if (Forums is null)
-            {
-                Forums = await ForumData.GetForums();
-            }
-
-            var existingForum = Forums.FirstOrDefault(p => p.Id == id);
+            var existingForum = await _context.Forum.FirstOrDefaultAsync(p => p.Id == id);
             if (existingForum != null)
             {
                 existingForum.Name = forum.Name;
@@ -84,6 +69,10 @@ namespace DiscConnectedApi.DAL
                 {
                     string validationErrors = string.Join(", ", validationResults.Select(v => v.ErrorMessage));
                     Console.WriteLine($"Validation errors: {validationErrors}");
+                }
+                else
+                {
+                    await _context.SaveChangesAsync();
                 }
             }
         }

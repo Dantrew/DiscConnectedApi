@@ -1,11 +1,22 @@
 
+using DiscConnectedApi.DAL;
+using DiscConnectedApi.DbContext;
+using Microsoft.EntityFrameworkCore;
+
 namespace DiscConnectedApi
 {
     public class Program
     {
         public static void Main(string[] args)
         {
+
             var builder = WebApplication.CreateBuilder(args);
+  
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            builder.Services.AddDbContext<DbContext.MyDbContext>(options =>
+                options.UseSqlServer(connectionString));
+
+            builder.Services.AddScoped<ForumManager, ForumManager>();
 
             // Add services to the container.
 

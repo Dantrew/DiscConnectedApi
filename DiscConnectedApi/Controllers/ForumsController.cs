@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DiscConnectedApi.DAL;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DiscConnectedApi.Controllers
 {
@@ -6,38 +7,45 @@ namespace DiscConnectedApi.Controllers
     [ApiController]
     public class ForumsController : ControllerBase
     {
-        [HttpGet]
-        public async Task<IEnumerable<Models.Forum>> GetProducts()
+        private readonly ForumManager _forumManager;
+        public ForumsController(ForumManager forumManager)
         {
-            var forums = await DAL.ForumManager.GetAllForums();
+            _forumManager = forumManager;
+        }
+
+
+        [HttpGet]
+        public async Task<IEnumerable<Models.Forum>> GetForums()
+        {
+            var forums = await _forumManager.GetAllForums();
             return forums;
         }
 
         [HttpGet("{id}")]
-        public async Task<Models.Forum> GetOneProduct(int id)
+        public async Task<Models.Forum> GetOneForum(int id)
         {
-            var forum = await DAL.ForumManager.GetOneForum(id);
+            var forum = await _forumManager.GetOneForum(id);
 
             return forum;
         }
 
-        [HttpPost]
-        public async Task Post([FromBody] Models.Forum forum)
-        {
-            await DAL.ForumManager.CreateForum(forum);
-        }
+        //[HttpPost]
+        //public async Task Post([FromBody] Models.Forum forum)
+        //{
+        //    await DAL.ForumManager.CreateForum(forum);
+        //}
 
         [HttpPut("{id}")]
         public async Task Put(int id, [FromBody] Models.Forum forum)
         {
-            await DAL.ForumManager.UpdateForum(forum, id);
+            await _forumManager.UpdateForum(forum, id);
         }
 
-        [HttpDelete("{id}")]
-        public async Task Delete(int id)
-        {
-            await DAL.ForumManager.DeleteForum(id);
-        }
+        //[HttpDelete("{id}")]
+        //public async Task Delete(int id)
+        //{
+        //    await DAL.ForumManager.DeleteForum(id);
+        //}
 
     }
 }
