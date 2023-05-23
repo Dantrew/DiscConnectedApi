@@ -16,6 +16,5 @@ namespace DiscConnectedApi.DbContext
         }
 
         public DbSet<Models.Forum> Forum { get; set; } = default!;
-        public DbSet<Models.SubForum> Subforum { get; set; } = default!;
     }
 }

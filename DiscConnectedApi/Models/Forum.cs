@@ -14,8 +14,5 @@ namespace DiscConnectedApi.Models
 
         [JsonPropertyName("date")]
         public DateTime Date { get; set; }
-
-        //[JsonPropertyName("subforums")]
-        //public List<Models.SubForum>? SubForums { get; set; }
     }
 }

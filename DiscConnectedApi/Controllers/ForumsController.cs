@@ -29,11 +29,11 @@ namespace DiscConnectedApi.Controllers
             return forum;
         }
 
-        //[HttpPost]
-        //public async Task Post([FromBody] Models.Forum forum)
-        //{
-        //    await DAL.ForumManager.CreateForum(forum);
-        //}
+        [HttpPost]
+        public async Task Post([FromBody] Models.Forum forum)
+        {
+            await _forumManager.CreateForum(forum);
+        }
 
         [HttpPut("{id}")]
         public async Task Put(int id, [FromBody] Models.Forum forum)
@@ -41,11 +41,11 @@ namespace DiscConnectedApi.Controllers
             await _forumManager.UpdateForum(forum, id);
         }
 
-        //[HttpDelete("{id}")]
-        //public async Task Delete(int id)
-        //{
-        //    await DAL.ForumManager.DeleteForum(id);
-        //}
+        [HttpDelete("{id}")]
+        public async Task Delete(int id)
+        {
+            await _forumManager.DeleteForum(id);
+        }
 
     }
 }

@@ -14,27 +14,24 @@ namespace DiscConnectedApi.DAL
             _context = context;
         }
 
-        //public static List<Models.Forum> Forums { get; set; }
+        internal async Task CreateForum(Forum forum)
+        {
+            var newForum = new Forum
+            {
+                Name = forum.Name,
+                Date = DateTime.Now,
+            };
+            await _context.Forum.AddAsync(newForum);
+            await _context.SaveChangesAsync();
+        }
 
-        //internal static async Task CreateForum(Forum forum)
-        //{
-        //    if (Forums is null)
-        //    {
-        //        await ForumData.GetForums();
-        //    }
-        //    Forums.Add(forum);
-        //}
-
-        //internal static async Task DeleteForum(int id)
-        //{
-        //    if (Forums is null)
-        //    {
-        //        await ForumData.GetForums();
-        //    }
-
-        //    Forums.RemoveAt(id - 1);
-        //}
-
+        internal async Task DeleteForum(int id)
+        {
+            var deleteForum = await _context.Forum.Where(f => f.Id == id).FirstOrDefaultAsync();
+            _context.Forum.Remove(deleteForum);
+            await _context.SaveChangesAsync();
+        }
+        
         internal async Task<List<Forum>> GetAllForums()
         {
             return await _context.Forum.ToListAsync();
